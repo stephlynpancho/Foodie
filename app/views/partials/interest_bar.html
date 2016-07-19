@@ -1,0 +1,31 @@
+<ul id="sortable">
+	{% for pref in prefs %}
+		{% if pref['preference_id'] == 1%}
+			<li class="pref_tab" banner="/static/img/banners/brunch_banner.jpg" data="Brunch"><a href="#content">Sunday Brunch</a></li>
+		
+		{% elif pref['preference_id'] == 2 %}
+			<li class="pref_tab" banner="/static/img/banners/juices_banner.jpg" data="Smoothies"><a href="#content">Juices</a></li>
+	
+		{% elif pref['preference_id'] == 3 %}
+			<li class="pref_tab" banner="/static/img/banners/mexican_banner.jpg" data="Mexican"><a href="#content">Mexican</a></li>
+	
+		{% elif pref['preference_id'] == 4 %}
+			<li class="pref_tab" banner="/static/img/banners/asian_banner.jpg" data="Asian"><a href="#content">Asian</a></li>
+	
+		{% elif pref['preference_id'] == 5 %}
+			<li class="pref_tab" banner="/static/img/banners/american_banner.jpg" data="American"><a href="#content">New American</a></li>
+	
+		{% elif pref['preference_id'] == 6 %}
+			<li class="pref_tab" banner="/static/img/banners/dessert_banner.jpg" data="Dessert"><a href="#content">Dessert</a></li>
+	
+		{% elif pref['preference_id'] == 7 %}
+			<li class="pref_tab" banner="/static/img/banners/coffee_banner.jpg" data="Coffee"><a href="#content">Coffee</a></li>
+		
+		{% elif pref['preference_id'] == 8 %}
+			<li class="pref_tab" banner="/static/img/banners/italian_banner.jpg" data="Italian"><a href="#content">Italian</a></li>
+		
+		{% elif pref['preference_id'] == 9 %}
+			<li class="pref_tab" banner="/static/img/banners/healthy_banner.jpg" data="Healthy"><a href="#content">Healthy Food</a></li>
+		{% endif %}
+	{% endfor %}
+</ul>

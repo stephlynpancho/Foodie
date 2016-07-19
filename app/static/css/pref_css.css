@@ -1,0 +1,137 @@
+*{
+	margin:0;
+	padding:0;
+}
+
+#header{
+	vertical-align: top;
+	display: block;
+	background-color: #e53935;
+	height: 56px;
+}
+	#header h2{
+		display: inline-block;
+		font-family: 'Roboto', sans-serif;
+		color: white;
+		margin-top: 14px;
+		margin-left: 40px;
+	}
+	#header h4{
+		display: inline-block;
+		font-family: 'Roboto', sans-serif;
+		color: white;
+	}
+	#header a{
+		display: inline-block;
+		text-decoration: none;
+		color: white;
+		font-family: 'Roboto', sans-serif;
+		float: right;
+		margin-right: 40px;
+		margin-top: 21px;
+	}
+#prefs{
+	width: auto;
+	height: auto;
+	margin-top: 10px;
+}
+.preference{
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 100px;
+	margin-bottom: 5px;
+	border-style: solid;
+	border-width: 6px;
+	border-color: white;
+	border-radius: 10px;
+}
+.preference img{
+	position: relative;
+	height: 300px;
+	width: 300px;
+	z-index: -1;
+	display: block;
+}
+
+.preference p{
+	position: absolute;
+	top:85px;
+	text-align: center;
+	width: 100%;
+	margin: 0 auto;
+	font-size: 50pt;
+	vertical-align: top;
+	color: white;
+	font-family: 'Roboto', sans-serif;
+}
+
+
+.select{
+	border-style: solid;
+	border-width: 6px;
+	border-color:  #e53935;
+}
+
+/*.darken {
+	display:inline-block;
+	background: -webkit-linear-gradient(
+      rgba(0, 0, 0, 0.33),
+      rgba(0, 0, 0, 0.33)
+      );
+	}*/
+
+.btn {
+	position: relative;
+	display: block;
+	float: right;
+	margin-right: 110px;
+	margin-top: 3px;
+	padding: 0;
+	overflow: hidden;
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	border-width: 0;
+	outline: none;
+	border-radius: 2px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+	background-color: #e53935;
+	color: #ecf0f1;
+	transition: background-color .3s;
+	padding: 8px 45px;
+}
+
+.btn:hover, .btn:focus {
+  background-color: #F44336;
+}
+
+.btn > * {
+  position: relative;
+}
+
+
+.btn:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 0;
+  padding-top: 0;  
+  border-radius: 100%;
+  background-color: rgba(236, 240, 241, .3);
+  
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.btn:active:before {
+  width: 120%;
+  padding-top: 120%;
+  
+  transition: width .2s ease-out, padding-top .2s ease-out;
+}
+

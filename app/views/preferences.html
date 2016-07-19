@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset = "utf-8">
+		<title> Your Preferences </title>
+		<link rel = "stylesheet" type = "text/css" href = "{{ url_for("static", filename = "css/pref_css.css")}}">
+		<link href='https://fonts.googleapis.com/css?family=Roboto:700' rel='stylesheet' type='text/css'>
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				var classSelect = 'select';
+				var $thumbs = $('.preference').click(function(e){
+					e.preventDefault();
+					$(this).toggleClass(classSelect);
+				});
+				$('.preference').click(function(e){
+					e.preventDefault();
+					if ($(this).children().last().attr('value')) {
+						$(this).children().last().removeAttr('value');
+					}
+					else {
+						var name = $(this).children().last().attr('name');
+						$(this).children().last().attr('value', name);
+					}
+				})
+			})
+		</script>
+	</head>
+	<body>
+	    <div id="container">
+	    	<div id="header">
+	    		<h2> Welcome, {{session["first_name"]}}: &nbsp;</h2>
+	    		<h4>Please Choose Your Preferences Below</h4>
+	    	</div>
+	    	<div id="prefs">
+				{% with messages = get_flashed_messages() %}
+					{% if messages: %}
+						{% for message in messages: %}
+							<p style="color:red; margin-left:40px; margin-bottom:5px;"> {{message}} </p>
+						{% endfor %}
+					{% endif %}
+				{% endwith %}
+	    		<form action='/preferences/add' method="POST">
+		    		<div class="preference darken">
+		    			<img src = "{{ url_for("static", filename = "img/asian.png")}}">
+		    			<p class="bold">Asian</p>
+		    			<input type="hidden"  name="Asian">
+		    		</div>
+		    		<div class="preference darken">
+		    			<img src = "{{ url_for("static", filename = "img/coffee.png")}}">
+		    			<p>Coffee</p>
+		    			<input type="hidden" name="Coffee">
+		    		</div>
+		    		<div class="preference darken">
+		    			<img src = "{{ url_for("static", filename = "img/dessert.png")}}">
+		    			<p>Dessert</p>
+		    			<input type="hidden" name="Dessert">
+		    		</div>
+		    		<div class="preference darken">
+		    			<img src = "{{ url_for("static", filename = "img/healthy.png")}}">
+		    			<p>Healthy Foods</p>
+		    			<input type="hidden" name="Healthy">
+		    		</div>
+		    		<div class="preference darken">
+		    			<img src = "{{ url_for("static", filename = "img/italian.png")}}">
+		    			<p>Italian</p>
+		    			<input type="hidden" name="Italian">
+		    		</div>
+		    		<div class="preference darken">
+		    			<img src = "{{ url_for("static", filename = "img/juices.png")}}">
+		    			<p>Juices</p>
+		    			<input type="hidden" name="Juices">
+		    		</div>
+		    		<div class="preference darken">
+		    			<img src = "{{ url_for("static", filename = "img/latin.png")}}">
+		    			<p>Mexican</p>
+		    			<input type="hidden" name="Mexican">
+		    		</div>
+		    		<div class="preference darken">
+		    			<img src = "{{ url_for("static", filename = "img/american.png")}}">
+		    			<p>New American</p>
+		    			<input type="hidden" name="New American">
+		    		</div>
+		    		<div class="preference darken">
+		    			<img src = "{{ url_for("static", filename = "img/brunch.png")}}">
+		    			<p>Sunday Brunch</p>
+		    			<input type="hidden" name="Sunday Brunch">
+		    		</div>
+		    		<input class="btn" type="submit" value='Add'>
+		    	</form>
+		</div>
+	</body>
+</html>

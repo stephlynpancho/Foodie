@@ -1,0 +1,7 @@
+<table id="groceries">
+	<tbody>
+		{% for grocery in groceries %}
+		<tr><td>{{grocery['item']}}</td><td><form id="{{grocery['id']}}" action="/remove_grocery" method="POST"><button data='{{grocery["id"]}}' class='btn'>Remove</button><input type="hidden" name="item" value="{{grocery['id']}}"></form></td></tr>
+		{% endfor %}
+	</tbody>
+</table>

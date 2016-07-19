@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Foodies Login</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+  </head>
+  <body>
+      <div id="header">
+        <h2> Foodies: &nbsp; </h2>
+        <h4> Helping you create your next meal </h4>
+        <a href= '/'> New User Register </a>
+      </div>
+     <div class = "box">
+      <div id="center basic-form" class="section">
+        <div class = "row">
+          <div class="col s12 m12 l6">
+            <div class="card-panel">
+              <h4 class="header 2"> Login </h4>
+              <div class="row">
+                <form class ="col s12" action = '/Foodies/login' method='POST'>
+                <div class="row">
+                  <div class = "input-field col s12">
+                   email: <input type="text" name="email">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class = "input-field col s12">
+                    password: <input type="password" name="password">
+                  </div>
+                </div>
+                    <input class="btn waves-effect waves-light red accent-2 white-text" type= "submit" value="Login">
+                <div class="row error">
+                  <div class="input-field col s12">
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages: %}
+                        {% for message in messages: %}
+                          <p style="color:red"> {{message}} </p>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+                  </div>
+                </div>
+                </form>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </body>
+</html>

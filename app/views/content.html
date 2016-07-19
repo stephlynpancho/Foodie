@@ -1,0 +1,218 @@
+<html>
+    <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:100,700' rel='stylesheet' type='text/css'>
+          
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="/static/css/content.css" type="text/css">
+
+    <script type="text/javascript">
+        // $(function() {
+        //     $("#sortable").sortable();
+        //     $("#sortable").disableSelection();
+        // });
+
+        $(document).ready(function(){
+            // Activate first preference tab on load
+            var banner_src = $('.pref_tab:first-child').attr('banner');
+            var start = $('.pref_tab:first-child').attr('data');
+            $('.pref_tab:first-child').css("background-color", "#F6685e");
+            get_recipes(start);
+            get_twtr(start);
+            $("#banner").html("<img src='"+banner_src+"'>");
+
+
+            $(document).on('click', '.pref_tab', function() {
+                // Click a preference tab
+                // reset color of previously selected tab and clear center content
+                // change color of selected tab
+                // load new banner image, recipe list, and twitter feed
+                var key = $(this).attr('data');
+                var banner_src = $(this).attr('banner');
+                $('#details').html("");
+                // switch_options();
+                $('.pref_tab').css("background-color", "#e53935");
+                $('#option_tab_1').css("background-color", "#ffb74d");
+                $(this).css("background-color", "#F6685e");
+                get_recipes(key);
+                get_twtr(key);
+                $("#banner").html("<img src='"+banner_src+"'>");
+            
+                return false;
+            });
+
+
+            $(document).on('click', '.recipe' ,function() {
+                // click a recipe, add colored border to recipe image and/or reset border of previously selected recipe
+                // load recipe details into center content
+                key = $(this).attr('data');
+                $('.recipe').css("border","4px solid rgba(0,0,0,0)");
+                $(this).css('border', "4px solid #F44336");
+                switch_options();
+                $('#details').html("<img class='loading' src='/static/img/loading.gif'>")
+                $.get("/show_recipe/"+key, function(res) {
+                    
+                    res = res['recipe'];
+                    var html_str = "<div id='details_top'>"
+                    html_str += "<img src='"+res['image_url']+"'>"
+                    html_str += "<h4>"+res['title']+"</h4>"
+                    html_str += "<h6 style='font-size: 0.6em;'>Click on an ingredient to add it to your grocery list</h6>"
+                    html_str += "</div><div id='ingredients'><ul>"
+                    var ingredients = res['ingredients'];
+                    for (var i=0; i < ingredients.length; i++) {
+                        html_str += "<form class='grocery_form' action='/Foodies/add_grocery' method='POST'>"
+                        html_str += "<input type='hidden' name='item' value='"+ingredients[i]+"'>"
+                        html_str += "<li class='grocery'>"+ingredients[i]+"</li>"
+                        html_str += "</form>"
+                    }
+                    html_str += "</ul></div>";
+                    html_str += "<div id='details_bottom'><a target='_blank' href='"+res['source_url']+"'>Click for Instructions</a>";
+                    html_str += "<h6>Powered By Food2Fork.com</h6></div>";
+                    $('#details').html(html_str);
+                }, 'json');
+
+                return false;
+            });
+
+            $(document).on('click', '#option_tab_2', function(){
+                // switch between recipe details and grocery list in center content
+                $('#option_tab_1').css("background-color", "#ffb74d");
+                $('#details').css("display", "none");
+                $('#option_tab_2').css("background-color", "#e53935");
+                $('#grocery_list').css("display", "block")
+                $.get('/get_groceries', function(res){
+                    $("#grocery_list").html(res);
+                })
+
+
+                return false;
+            });
+
+            $(document).on('click', '#option_tab_1',function(){
+                switch_options();
+                return false;
+            });
+
+            $(document).on('click', '.grocery_form', function(){
+                // add item to grocery list
+
+                $(this).css("background-color", "#e53935");
+
+                setTimeout(function(){
+                    $('.grocery_form').removeAttr('style');
+                }, 50);
+
+                $.post($(this).attr('action'), $(this).serialize(), function(){
+
+                    return false;
+                });
+                
+            });
+
+            $(document).on('click', '.btn', function(){
+                // remove item from grocery list
+                var item = $(this).attr('data');
+                $.post($('#'+item).attr('action'), $('#'+item).serialize(), function(){
+                });
+
+                $.get('/get_groceries', function(res){
+                    $("#grocery_list").html(res);
+                })
+                
+                return false;
+            });
+
+        });
+        function get_recipes(key){
+            $('#search_content').html("<img class='loading' src='/static/img/loading.gif'>");
+
+            $.get("/get_recipes/"+key, function(res) {
+                    recipes = res.recipes;
+                    var html_str = ""
+                    $('#details').html(html_str);
+                    for (var i=0; i<recipes.length; i++) {
+                        html_str += "<div class='recipe' alt_style='background-image: url(\""+recipes[i]['image_url']+"\")' style='background-image: linear-gradient(rgba(0,0,0,0.33),rgba(0,0,0,0.33)), url(\""+recipes[i]['image_url']+"\")' data='"+recipes[i]['recipe_id']+"'>";
+                        html_str += "<p class='recipe_link'>"+recipes[i]['title']+"</p>";
+                        html_str += "</div>";
+                    }
+                    $('#search_content').html(html_str);
+                }, 'json');
+        }
+
+        function get_twtr(key){
+            $('#twtr_content').html("<img class='loading' src='/static/img/loading.gif'>");
+            $.get("/get_twtr/"+key, function(res){
+                console.log(res);
+                $('#twtr_content').html(res);
+                window.twttr = (function(d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0],
+                    t = window.twttr || {};
+                    if (d.getElementById(id)) return t;
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = "https://platform.twitter.com/widgets.js";
+                    fjs.parentNode.insertBefore(js, fjs);
+
+                    t._e = [];
+                    t.ready = function(f) {
+                        t._e.push(f);
+                    };
+
+                    return t;
+
+                }(document, "script", "twitter-wjs"));
+                twttr.ready(function (twttr) { twttr.widgets.load();});
+            });
+        }
+
+        function switch_options() {
+
+            // switch between recipe details and grocery list in center content
+            $('#option_tab_2').css("background-color", "#ffb74d");
+            $('#details').css("display", "block");
+            $('#option_tab_1').css("background-color", "#e53935");
+            $('#grocery_list').css("display", "none");
+
+        }
+
+    </script>
+    </head>
+        <body>
+         <div id="header">
+                <h2> Welcome, {{session["first_name"]}}: &nbsp;</h2>
+                <a href="/Foodies/logout"> Logout </a>
+            </div>
+        <div id="wrapper">
+            <div id="banner">`
+            </div> <!-- end of banner -->
+            <div id="nav_bar">
+                {% include "/partials/interest_bar.html" %}
+            </div> <!-- end of nav_bar -->
+            <div id="content">
+                <div id="recipe_tab_left">
+                    <h3>Top Recipes</h3>
+                    <div id="search_content">
+                    </div>
+                </div>
+                <div id="center_content">
+                    <div id="option_tabs">
+                        <ul>
+                            <li id="option_tab_1"><a href="#details">Recipe Details</a></li>
+                            <li id="option_tab_2"><a href="#details">Grocery List</a></li>
+                        </ul>
+                    </div>
+                    <div id="details"></div>
+                    <div id="grocery_list">{% include "/partials/grocery_list.html" %}</div>
+                </div>
+                <div id="twtr_tab_right">
+                    <h3>Relevant Twitter Posts</h3>
+                    <div id="twtr_content">
+                    </div>
+                </div>
+            </div> <!-- end of content -->
+        </div> <!-- end of wrapper -->
+        <script>
+        </script>
+    </body>
+</html>
